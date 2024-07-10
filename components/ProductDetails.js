@@ -1,20 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, Button } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { getProductDetailsFromApi } from '../api';
+import { addProduct, hasProduct, removeProduct } from '../storage';
+import { HeartIcon } from 'react-native-heroicons/outline';
 
-export default function ProductDetail({ navigation }) {
+export default function ProductDetail({ navigation, refresh, refreshFlag }) {
     const route = useRoute();
     const { productId } = route.params;
     const [product, setProduct] = useState(null);
+    const [isInCart, setIsInCart] = useState(false);
 
-    useEffect(() => {
-        async function fetchProductDetails() {
-            const productDetails = await getProductDetailsFromApi(productId);
-            setProduct(productDetails);
+    useFocusEffect(
+        useCallback(() => {
+            async function fetchProductDetails() {
+                const productDetails = await getProductDetailsFromApi(productId);
+                setProduct(productDetails);
+                const isInCartNow = await hasProduct(productId);
+                setIsInCart(isInCartNow);
+            }
+            fetchProductDetails();
+        }, [productId, refreshFlag])
+    );
+
+    const handleAddToCart = async () => {
+        if (!isInCart) {
+            await addProduct(product);
+            setIsInCart(true);
+        } else {
+            await removeProduct(productId);
+            setIsInCart(false);
         }
-        fetchProductDetails();
-    }, [productId]);
+        refresh(prev => !prev);
+    };
 
     if (!product) {
         return <Text>Loading...</Text>;
@@ -30,11 +48,14 @@ export default function ProductDetail({ navigation }) {
                 <View style={{ flexDirection: 'row', marginTop: 20 }}>
                     <Text>Icons: Do not bleach, Do not tumble dry, Dry clean, Iron at max</Text>
                 </View>
-                <Button
-                    title="Checkout"
-                    onPress={() => navigation.navigate('Checkout')}
-                />
             </View>
+            <TouchableOpacity
+                style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: 'black' }}
+                onPress={handleAddToCart}
+            >
+                <HeartIcon color={'white'} size={20} />
+                <Text style={{ color: 'white', fontSize: 18, marginLeft: 10 }}>{isInCart ? 'Remove from Cart' : 'Add to Cart'}</Text>
+            </TouchableOpacity>
         </ScrollView>
     );
 }

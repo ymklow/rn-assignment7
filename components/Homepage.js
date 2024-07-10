@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, ScrollView } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import Product from '../components/product';
 import Header from '../components/header';
 import { getProductsFromApi } from '../api';
@@ -7,13 +8,15 @@ import { getProductsFromApi } from '../api';
 export default function HomePage({ navigation, refresh, refreshFlag }) {
     const [products, setProducts] = useState([]);
 
-    useEffect(() => {
-        async function fetchProducts() {
-            const productsData = await getProductsFromApi();
-            setProducts(productsData);
-        }
-        fetchProducts();
-    }, [refreshFlag]);
+    useFocusEffect(
+        useCallback(() => {
+            async function fetchProducts() {
+                const productsData = await getProductsFromApi();
+                setProducts(productsData);
+            }
+            fetchProducts();
+        }, [refreshFlag])
+    );
 
     return (
         <>

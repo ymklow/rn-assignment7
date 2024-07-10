@@ -10,6 +10,7 @@ export async function getProducts() {
     return products;
   } catch (err) {
     console.log("Err:", err);
+    return [];
   }
 }
 
@@ -22,22 +23,22 @@ export async function setProducts(products) {
   }
 }
 
-export async function addProduct(productId) {
+export async function addProduct(product) {
   const existingProducts = await getProducts();
-  if (existingProducts.includes(productId)) {
+  if (existingProducts.some(p => p.id === product.id)) {
     return;
   }
-  existingProducts.push(productId);
+  existingProducts.push(product);
   setProducts(existingProducts);
 }
 
-export async function removeProduct(item) {
+export async function removeProduct(productId) {
   const existingProducts = await getProducts();
-  const updatedProducts = existingProducts.filter(id => id != item);
+  const updatedProducts = existingProducts.filter(product => product.id !== productId);
   await setProducts(updatedProducts);
 }
 
 export async function hasProduct(productId) {
   const existingProducts = await getProducts();
-  return existingProducts.includes(productId);
+  return existingProducts.some(product => product.id === productId);
 }
