@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image ,Pressable} from "react-native";
 import { Bars2Icon, MagnifyingGlassIcon, ShoppingBagIcon} from 'react-native-heroicons/outline';
 
-export default function Header({ navigation}) {
+export default function Header1({ navigation}) {
     return (
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 50, paddingHorizontal: 20, paddingBottom: 10, backgroundColor: 'white' }}>
             <View style={{ width: 50 }}>

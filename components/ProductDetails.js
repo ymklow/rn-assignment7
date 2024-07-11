@@ -4,6 +4,7 @@ import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { getProductDetailsFromApi } from '../api';
 import { addProduct, hasProduct, removeProduct } from '../storage';
 import { HeartIcon } from 'react-native-heroicons/outline';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProductDetail({ navigation, refresh, refreshFlag }) {
     const route = useRoute();
@@ -39,9 +40,10 @@ export default function ProductDetail({ navigation, refresh, refreshFlag }) {
     }
 
     return (
+        
         <ScrollView>
-            <View style={{ padding: 20 }}>
-                <Image source={{ uri: product.image }} style={{ width: '100%', height: 300 }} />
+            <View style={{ padding: 20, marginTop:50 }}>
+                <Image source={{ uri: product.image }} style={{ width: '100%', height: 300 , resizeMode:'contain'}} />
                 <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{product.title}</Text>
                 <Text style={{ marginVertical: 10 }}>{product.description}</Text>
                 <Text style={{ fontSize: 20, color: 'green' }}>${product.price}</Text>
@@ -49,13 +51,17 @@ export default function ProductDetail({ navigation, refresh, refreshFlag }) {
                     <Text>Icons: Do not bleach, Do not tumble dry, Dry clean, Iron at max</Text>
                 </View>
             </View>
+
+            <View style={{position:'absolute', top:"140%", width:'100%' , }}>
             <TouchableOpacity
-                style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: 'black' }}
+                style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: 'black', }}
                 onPress={handleAddToCart}
             >
                 <HeartIcon color={'white'} size={20} />
-                <Text style={{ color: 'white', fontSize: 18, marginLeft: 10 }}>{isInCart ? 'Remove from Cart' : 'Add to Cart'}</Text>
+                <Text style={{ color: 'white', fontSize: 18, marginLeft: 10,  }}>{isInCart ? 'Remove from Cart' : 'Add to Cart'}</Text>
             </TouchableOpacity>
+            </View>
         </ScrollView>
+        
     );
 }

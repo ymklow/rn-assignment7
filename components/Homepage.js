@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, ScrollView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Product from '../components/product';
-import Header from '../components/header';
+import Header from '../components/header1';
 import { getProductsFromApi } from '../api';
 
 export default function HomePage({ navigation, refresh, refreshFlag }) {

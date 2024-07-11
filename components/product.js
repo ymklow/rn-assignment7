@@ -33,7 +33,7 @@ export default function Product({ id, name, price, image, isListView, refresh, r
     >
       <View style={{ width: '100%' }}>
         <View style={{ position: 'relative', marginBottom: 10 }}>
-          <Image source={image} style={{ width: '100%', height: undefined, aspectRatio: 1 }} />
+          <Image source={image} style={{ width: '100%', height: undefined, aspectRatio: 1, resizeMode: 'contain' }} />
           <TouchableOpacity
             style={{ position: 'absolute', bottom: 10, right: 10 }}
             onPress={handleAddToCart}
