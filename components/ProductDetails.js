@@ -51,8 +51,8 @@ export default function ProductDetail({ navigation, refresh, refreshFlag }) {
                     <Text>Icons: Do not bleach, Do not tumble dry, Dry clean, Iron at max</Text>
                 </View>
             </View>
-
-            <View style={{position:'absolute', top:"140%", width:'100%' , }}>
+        
+            <View style={{position:'absolute', top:"130%", width:'100%' , }}>
             <TouchableOpacity
                 style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 20, backgroundColor: 'black', }}
                 onPress={handleAddToCart}
